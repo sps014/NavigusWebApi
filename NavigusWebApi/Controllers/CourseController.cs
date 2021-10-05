@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NavigusWebApi.Extensions;
 
 namespace NavigusWebApi.Controllers
 {
@@ -15,11 +16,11 @@ namespace NavigusWebApi.Controllers
             Accessor = accessor;
         }
 
-        [Authorize]
+        [Authorize(Roles ="Student,Teacher")]
         [HttpGet("list")]
         public IActionResult List()
         {
-            return Ok(string.Join("\n",Accessor.HttpContext.User.Claims.Select(x=>x.Subject+" : "+x.Value)));
+            return Ok(Accessor.GetUid());
         }
     }
 }
