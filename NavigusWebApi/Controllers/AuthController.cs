@@ -59,7 +59,8 @@ namespace NavigusWebApi.Controllers
                     if (val.Password != user.Password)
                         return BadRequest("Invalid Password");
 
-                    var token = JwtManager.Authenticate(user.Email,val.Role.ToString());
+                    //generate token with uid
+                    var token = JwtManager.Authenticate(u.Uid,val.Role.ToString());
 
                     return Ok($"{user.Email} logged in Successfully  with role {val.Role}\ntoken={token}");
                 }
@@ -105,6 +106,9 @@ namespace NavigusWebApi.Controllers
                 return BadRequest($"Signup Failed \n{e.Message}");
             }
         }
+
+
+
         [Authorize(Roles ="Student")]
         [HttpGet("repo")]
         public string Repo()

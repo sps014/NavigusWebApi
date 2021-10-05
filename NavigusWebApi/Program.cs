@@ -28,6 +28,7 @@ builder.Services.AddSingleton(a => FirebaseAuth.DefaultInstance);
 
 
 //add jwt middleware
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -73,6 +74,7 @@ app.Run();
 
 static FirestoreDb ConfigureFirebase()
 {
+
     var path = $"{AppDomain.CurrentDomain.BaseDirectory}firebase.json";
 
     var credentials = new AppOptions()

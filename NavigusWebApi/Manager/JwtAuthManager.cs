@@ -15,7 +15,7 @@ namespace NavigusWebApi.Manager
         }
 
         //Generate JWT Token
-        public string Authenticate(string email,string role)
+        public string Authenticate(string uid,string role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -28,7 +28,7 @@ namespace NavigusWebApi.Manager
                 Subject = new ClaimsIdentity(
                     new Claim[]
                     {
-                        new Claim(ClaimTypes.Email, email),
+                        new Claim(ClaimTypes.NameIdentifier, uid),
                         new Claim(ClaimTypes.Role,role)
                     }),
 
@@ -42,6 +42,7 @@ namespace NavigusWebApi.Manager
                 )
             };
 
+            //with description generate token
             var token=tokenHandler.CreateToken(tokenDescription);
             return tokenHandler.WriteToken(token);
 

@@ -2,6 +2,6 @@
 {
     public interface IJwtAuthManager
     {
-        string Authenticate(string email,string role);
+        string Authenticate(string uid,string role);
     }
 }
