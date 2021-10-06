@@ -10,6 +10,8 @@ using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Net.Http.Headers;
+using Microsoft.OpenApi.Models;
 
 const string Key = "Navigus Secure Key For JWT";
 
@@ -20,6 +22,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(c =>
 {
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name ="Authorization",
+        Type=SecuritySchemeType.ApiKey,
+        Scheme="Bearer",
+        In= ParameterLocation.Header,
+        BearerFormat="JWT",
+        Description="JWT Auth"
+    });
     c.SwaggerDoc("v1", new() { Title = "NavigusWebApi", Version = "v1" });
 });
 
@@ -70,6 +81,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapGet("/",SetupIndexPage);
+
 app.Run();
 
 
@@ -88,4 +101,11 @@ static FirestoreDb ConfigureFirebase()
     FirebaseApp.Create(credentials);
     return FirestoreDb.Create("naviguscloud");
 
+}
+
+IResult SetupIndexPage()
+{
+    return Results.Content(@"<h2>Navigus Web Api is running.<h2><br/>
+<h4>refer <b> <a href='https://github.com/sps014/NavigusWebApi/blob/main/README.md'>github readme</a> </b>
+for more information</h4><br>","text/html");
 }
