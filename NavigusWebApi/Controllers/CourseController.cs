@@ -84,5 +84,76 @@ namespace NavigusWebApi.Controllers
                 return BadRequest(e.Message);
             }
         }
+        [Authorize(Roles ="Teacher")]
+        [HttpPost("edit/{id}")]
+        public async Task<IActionResult> Edit(string id,[FromBody]CourseModel courseModel)
+        {
+            //get creator GUID
+            courseModel.Creator = Accessor.GetUid();
+            
+            //checking if course id is non empty
+            if (string.IsNullOrWhiteSpace((id)))
+                return BadRequest("Course Id cant be null, please specify existing course id in route");
+            
+            //checking if course id is non empty
+            if (string.IsNullOrWhiteSpace((courseModel.CourseId)))
+                return BadRequest("new Course Id cant be null");
+
+            try
+            {
+                //checking if course already exists in db
+                var rec = await Db.Collection(ListCollectionName).Document(id).GetSnapshotAsync();
+                
+                //cant add if already exist
+                if (!rec.Exists)
+                    return BadRequest($"Course : {id} not exists, please add new");
+
+                var prev = rec.ConvertTo<CourseModel>();
+                
+                //if new course does not have new quiz add previous quiz
+                courseModel.Quiz ??= prev.Quiz;
+                
+                //delete previous and add new 
+                await Db.Collection(ListCollectionName).Document(id).DeleteAsync();
+                
+                //add to db
+                await Db.Collection(ListCollectionName).Document(courseModel.CourseId).SetAsync(courseModel);
+                
+                return Ok($"Edited course : {courseModel.CourseId} from {id}");
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        [Authorize(Roles = "Teacher,Student")]
+        [HttpGet("get/{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            //checking if course id is non empty
+            if (string.IsNullOrWhiteSpace((id)))
+                return BadRequest("Course Id cant be null, please specify existing course id in route");
+
+            try
+            {
+                //checking if course already exists in db
+                var rec = await Db.Collection(ListCollectionName).Document(id).GetSnapshotAsync();
+
+                //cant add if already exist
+                if (!rec.Exists)
+                    return BadRequest($"Course : {id} not exists, please add new");
+
+                var prev = rec.ConvertTo<CourseModel>();
+
+
+                return Ok(prev);
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }
