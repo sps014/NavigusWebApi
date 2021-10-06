@@ -1,6 +1,6 @@
 ﻿using Google.Cloud.Firestore;
 
-namespace NavigusWebApi.Controllers
+namespace NavigusWebApi.Models
 {
     [FirestoreData]
     public class StudentCourseDetailsModel
@@ -8,9 +8,11 @@ namespace NavigusWebApi.Controllers
         [FirestoreProperty]
         public string CourseId { get; set; }
         [FirestoreProperty]
-        public string EnrolledDate { get; set; }
+        public long EnrolledTimeStamp { get; set; }
         [FirestoreProperty]
-        public DateTime QuizStartedTime { get; set; }
+        public long QuizStartedTimeStamp { get; set; }
+        [FirestoreProperty]
+        public bool QuizStarted { get; set; } = false;
         [FirestoreProperty]
         public List<int> Attempted { get; set; }
         [FirestoreProperty]

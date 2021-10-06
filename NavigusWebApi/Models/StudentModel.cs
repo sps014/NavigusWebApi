@@ -1,6 +1,6 @@
 ﻿using Google.Cloud.Firestore;
 
-namespace NavigusWebApi.Controllers
+namespace NavigusWebApi.Models
 {
     [FirestoreData]
     public class StudentModel
