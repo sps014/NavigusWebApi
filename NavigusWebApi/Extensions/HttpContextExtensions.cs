@@ -1,4 +1,7 @@
-﻿namespace NavigusWebApi.Extensions
+﻿using System.Linq;
+using Microsoft.AspNetCore.Http;
+
+namespace NavigusWebApi.Extensions
 {
     public static class HttpContextExtensions
     {

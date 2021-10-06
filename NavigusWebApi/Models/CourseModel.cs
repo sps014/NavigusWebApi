@@ -9,9 +9,10 @@ namespace NavigusWebApi.Models
         public string CourseName { get; set; }
 
         [FirestoreDocumentId]
-        [FirestoreProperty]
         public string CourseId { get; set; }
         [FirestoreProperty]
         public QuizModel Quiz { get; set; }
+        [FirestoreProperty]
+        public  string Creator { get; set; }
     }
 }
