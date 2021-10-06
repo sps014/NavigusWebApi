@@ -16,5 +16,8 @@ namespace NavigusWebApi.Models
 
         [FirestoreProperty]
         public int[] CorrectOptionIndexs { get; set; }
+
+        [FirestoreProperty]
+        public string[] Tags { get; set;  }
     }
 }

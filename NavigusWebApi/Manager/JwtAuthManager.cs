@@ -25,7 +25,7 @@ namespace NavigusWebApi.Manager
 
             var tokenDescription = new SecurityTokenDescriptor()
             {
-                //user email is used for claim
+                //user uid is used for claim
                 Subject = new ClaimsIdentity(
                     new Claim[]
                     {
