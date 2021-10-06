@@ -185,13 +185,44 @@ namespace NavigusWebApi.Controllers
                 await Db.Collection(ListCollectionName).Document(uid).SetAsync(student);
                 await UpdateLeaderboard(uid, courseId, course);
 
-                return Ok($"Successfully submitted answer for course id {courseId}");
+                return Ok(new
+                {
+                    PassStatus= course.PointsObtained >= courseInfo.Quiz.PassingMarks,
+                    NextQuestionSmartSuggestionIndex=SmartSuggestionForNextQuestion(
+                        courseInfo.Quiz,course,ans.QuestionIndex,isCorrect)
+                });
 
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+        }
+        private int SmartSuggestionForNextQuestion(QuizModel quiz,StudentCourseDetailsModel stud
+            ,int lastInd,bool lastcorrect)
+        {
+            if(quiz.Questions.Length==stud.Attempted.Count)
+                return -1;
+
+            var remaining = new List<QuestionModel>();
+            for(int i=0;i<quiz.Questions.Length;i++)
+            {
+                if (stud.Attempted.Contains(i))
+                    continue;
+                remaining.Add(quiz.Questions[i]);
+            }
+
+            QuestionModel q;
+            if(lastcorrect)
+                q=remaining.Where(x=>x.Difficulty>=quiz.Questions[lastInd].Difficulty).First();
+            else
+                q = remaining.Where(x => x.Difficulty <= quiz.Questions[lastInd].Difficulty).First();
+
+            int ind = -1;
+            if(q is null)
+                q= remaining[0];
+            ind = Array.IndexOf(quiz.Questions, q);
+            return ind;
         }
         private async Task UpdateLeaderboard(string uid,string courseId,StudentCourseDetailsModel data)
         {
