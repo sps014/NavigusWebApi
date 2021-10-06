@@ -98,7 +98,7 @@ namespace NavigusWebApi.Controllers
 
                 //write user info to database
                 await Db.Collection(CollectionName).Document(u.Uid)
-                    .SetAsync(new UserInfo{Role=user.Role,Password=user.Password});
+                    .SetAsync(new UserInfo{Role=user.Role,Password=user.Password,UserName=user.UserName,Email=user.Email});
 
                 return Ok($"created user {user.Email} with role {user.Role}");
 

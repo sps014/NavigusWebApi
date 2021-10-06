@@ -183,6 +183,7 @@ namespace NavigusWebApi.Controllers
 
                 //update value
                 await Db.Collection(ListCollectionName).Document(uid).SetAsync(student);
+                await UpdateLeaderboard(uid, courseId, course);
 
                 return Ok($"Successfully submitted answer for course id {courseId}");
 
@@ -191,6 +192,11 @@ namespace NavigusWebApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+        private async Task UpdateLeaderboard(string uid,string courseId,StudentCourseDetailsModel data)
+        {
+            await Db.Collection(courseId+"_Scores").Document(uid).SetAsync(
+                new ScoreModel { Points = data.PointsObtained, Xp = data.XpObtained, Uid = uid });
         }
         private async Task<StudentModel> CreateOrGetProfileAsync(string uid)
         {

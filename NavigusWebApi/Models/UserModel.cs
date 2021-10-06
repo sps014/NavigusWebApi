@@ -6,6 +6,7 @@ namespace NavigusWebApi.Models
     {
         public string Email {  get; set; }
         public string Password {  get; set; }
+        public string UserName {  get; set; }
         public Roles Role { get; set; }
     }
     public class UserModel
@@ -22,6 +23,10 @@ namespace NavigusWebApi.Models
         public Roles Role { get; set; }
         [FirestoreProperty]
         public string Password { get; set; }
+        [FirestoreProperty]
+        public string UserName {  get; set; }
+        [FirestoreProperty]
+        public string Email { get; set; }
     }
 
     public enum Roles

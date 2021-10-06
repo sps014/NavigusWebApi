@@ -19,5 +19,7 @@ namespace NavigusWebApi.Models
 
         [FirestoreProperty]
         public string[] Tags { get; set;  }
+        [FirestoreProperty]
+        public int Difficulty { get; set; } = 0;
     }
 }
