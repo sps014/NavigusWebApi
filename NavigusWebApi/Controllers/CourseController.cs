@@ -155,5 +155,32 @@ namespace NavigusWebApi.Controllers
                 return BadRequest(e.Message);
             }
         }
+        [Authorize(Roles = "Teacher")]
+        [HttpGet("delete/{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            //checking if course id is non empty
+            if (string.IsNullOrWhiteSpace((id)))
+                return BadRequest("Course Id cant be null, please specify existing course id in route");
+
+            try
+            {
+                //checking if course already exists in db
+                var rec = await Db.Collection(ListCollectionName).Document(id).GetSnapshotAsync();
+
+                //if not  exist
+                if (!rec.Exists)
+                    return BadRequest($"Course : {id} not exists, please add new");
+
+                await Db.Collection(ListCollectionName).Document(id).DeleteAsync();
+
+                return Ok($"Deleted course {id}");
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }

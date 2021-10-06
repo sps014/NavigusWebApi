@@ -101,5 +101,54 @@ namespace NavigusWebApi.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [Authorize(Roles = "Teacher")]
+        [HttpGet("delete/{courseId}/{questionIndex}")]
+        public async Task<IActionResult> Delete(string courseId,string questionIndex)
+        {
+            //checking if course id is non empty
+            if (string.IsNullOrWhiteSpace((courseId)))
+                return BadRequest("Course Id cant be null, please specify existing course id in route");
+
+            if (string.IsNullOrWhiteSpace((questionIndex)) || ! int.TryParse(questionIndex,out _))
+                return BadRequest("QuestionIndex can't be null or any thing other than int");
+
+            try
+            {
+                //checking if course already exists in db
+                var rec = await Db.Collection(ListCollectionName).Document(courseId).GetSnapshotAsync();
+
+                //if not exist
+                if (!rec.Exists)
+                    return BadRequest($"Course : {courseId} not exists");
+
+                var prev = rec.ConvertTo<CourseModel>();
+
+                if (prev.Quiz == null)
+                    return BadRequest("Quiz is null , no point in deleting anything");
+
+                var newQues = new List<QuestionModel>();
+                if (prev.Quiz.Questions != null)
+                    newQues.AddRange(prev.Quiz.Questions);
+
+                var ind=int.Parse(questionIndex);
+                if((uint)ind>=newQues.Count())
+                {
+                    return BadRequest($"Index out of bound {ind} for length {newQues.Count}");
+                }
+                newQues.RemoveAt(ind);
+
+                prev.Quiz.Questions = newQues.ToArray();
+
+                await Db.Collection(ListCollectionName).Document(courseId).SetAsync(prev);
+
+                return Ok($"Deleted question index {questionIndex} from {courseId}");
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }
