@@ -46,10 +46,17 @@ namespace NavigusWebApi.Controllers
 
                 var p=rec.ConvertTo<CourseModel>();
 
-                //retain old questions if empty questions are pushed
-                var old = p.Quiz.Questions;
-                p.Quiz = quizModel;
-                p.Quiz.Questions ??= old;
+                //retain old questions if no questions are pushed
+                if (p.Quiz != null)
+                {
+                    var old = p.Quiz.Questions;
+                    p.Quiz = quizModel;
+                    p.Quiz.Questions ??= old;
+                }
+                else
+                {
+                    p.Quiz = quizModel;
+                }
 
 
                 //add to db

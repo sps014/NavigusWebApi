@@ -8,9 +8,12 @@ namespace NavigusWebApi.Models
         [FirestoreProperty]
         public string CourseId { get; set; }
         [FirestoreProperty]
-        public long EnrolledTimeStamp { get; set; }
+        public Timestamp EnrolledTimeStamp { get; set; }
+        public string EnrollTime=>EnrolledTimeStamp.ToDateTime().ToString();
         [FirestoreProperty]
-        public long QuizStartedTimeStamp { get; set; }
+        public Timestamp QuizExpireTimeStamp { get; set; }
+        public string QuizExpireTime => QuizExpireTimeStamp.ToDateTime().ToString();
+
         [FirestoreProperty]
         public bool QuizStarted { get; set; } = false;
         [FirestoreProperty]
