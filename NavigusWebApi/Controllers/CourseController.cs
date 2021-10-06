@@ -104,7 +104,7 @@ namespace NavigusWebApi.Controllers
                 //checking if course already exists in db
                 var rec = await Db.Collection(ListCollectionName).Document(id).GetSnapshotAsync();
                 
-                //cant add if already exist
+                // if not already exist
                 if (!rec.Exists)
                     return BadRequest($"Course : {id} not exists, please add new");
 
@@ -140,7 +140,7 @@ namespace NavigusWebApi.Controllers
                 //checking if course already exists in db
                 var rec = await Db.Collection(ListCollectionName).Document(id).GetSnapshotAsync();
 
-                //cant add if already exist
+                //if not  exist
                 if (!rec.Exists)
                     return BadRequest($"Course : {id} not exists, please add new");
 

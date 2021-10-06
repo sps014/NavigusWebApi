@@ -109,20 +109,5 @@ namespace NavigusWebApi.Controllers
             }
         }
 
-
-
-        [Authorize(Roles ="Student")]
-        [HttpGet("repo")]
-        public string Repo()
-        {
-            return "OK S";
-        }
-        [Authorize(Roles = "Teacher")]
-        [HttpGet("teacher")]
-        public string Teacher()
-        {
-            return "OK T";
-        }
-
     }
 }

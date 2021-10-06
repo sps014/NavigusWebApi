@@ -15,6 +15,6 @@ namespace NavigusWebApi.Models
         public uint Points { get; set; }
 
         [FirestoreProperty]
-        public int[] CorrectOptionIndex { get; set; }
+        public int[] CorrectOptionIndexs { get; set; }
     }
 }
