@@ -64,7 +64,7 @@ namespace NavigusWebApi.Controllers
                     //generate token with uid
                     var token = JwtManager.Authenticate(u.Uid,val.Role.ToString());
 
-                    return Ok($"{user.Email} logged in Successfully  with role {val.Role}\ntoken={token}");
+                    return Ok(new{Token=token,Role=val.Role});
                 }
                 else
                 {

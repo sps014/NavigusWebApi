@@ -1,0 +1,27 @@
+﻿@page "/signup"
+
+<div class="login">
+          <div class="login-header">
+            <h3>Signup</h3>
+            <p>Please create your account.</p>
+          </div>
+        </div>
+<div class="login-form">
+    <input class="form-control m-3" type="text" placeholder="username"/>
+    <input class="form-control m-3" type="email" placeholder="email"/>
+    <input class="form-control m-3" type="password" placeholder="password"/>
+    <div>
+        <label for="role">Choose a Role:</label>
+        
+        <select class="form-control m-3" name="role" id="role">
+            <option value="Student">Student</option>
+            <option value="Teacher">Teacher</option>
+        </select>
+    </div>
+    <button class="btn btn-primary m-3">Signup</button>
+    <p class="message">Already registered? <a href="/login">Login</a></p>
+</div>
+
+@code {
+    
+}

@@ -1,0 +1,21 @@
+﻿@page "/"
+@using NavigusWebApp.Client.Data
+
+<PageTitle>Home</PageTitle>
+
+@if(!CredsData.IsLogin)
+{
+    <div>Please Either Login or Signup into website</div>
+    <div class="alert">
+        <a class="btn btn-primary" href="/login">Login</a>
+        <a class="btn btn-warning" href="/signup">Signup</a>
+    </div>
+}
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        
+    }
+}

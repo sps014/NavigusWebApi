@@ -1,0 +1,51 @@
+﻿@page "/login"
+@using NavigusWebApi.Models
+@using NavigusWebApp.Client.Data
+@using System.Text.Json
+@inject NavigationManager Nav
+@inject HttpClient Http
+
+<div class="login">
+          <div class="login-header">
+            <h3>LOGIN</h3>
+            <p>Please enter your credentials to login.</p>
+          </div>
+        </div>
+        <div class="login-form">
+          <input class="form-control m-3" type="email" placeholder="email" @bind-value="email"/>
+          <input class="form-control m-3" type="password" placeholder="password" @bind-value="password"/>
+          @if (!string.IsNullOrWhiteSpace(error))
+          {
+            <div class="alert alert-danger m-3">@error</div>
+          }
+          <button class="btn btn-primary m-3" @onclick="DoLogin">login</button>
+          <p class="message">Not registered? <a href="/signup">Create an account</a></p>
+        </div>
+@code {
+  
+  private string error;
+  private string email;
+  private string password;
+  
+  async Task DoLogin()
+  {
+    var res=await Http.PostAsJsonAsync("/Auth/login",
+      new UserModel{Email = email,Password = password});
+    if (res.IsSuccessStatusCode)
+    {
+      var d = JsonSerializer.Deserialize<LoginRes>(await res.Content.ReadAsStringAsync());
+      CredsData.JWT = d.Token;
+      CredsData.Role = (Roles)d.Role;
+      error = "";
+      Nav.NavigateTo("/");
+    }
+    else
+    {
+      error = await res.Content.ReadAsStringAsync();
+      StateHasChanged();
+    }
+  }
+
+  record LoginRes(string Token, int Role);
+
+}
