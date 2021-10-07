@@ -171,7 +171,7 @@ namespace NavigusWebApi.Controllers
                 
                 course.Attempted.Add(ans.QuestionIndex);
 
-                bool isCorrect = curQues.CorrectOptionIndexs.Intersect(ans.Answers).Count()==0;
+                bool isCorrect = EqualAns(curQues.CorrectOptionIndexs.ToList(),ans.Answers.ToList());
 
                 //gamification for scoreboard
                 if(isCorrect)
@@ -230,6 +230,13 @@ namespace NavigusWebApi.Controllers
         {
             await Db.Collection(courseId+"_Scores").Document(uid).SetAsync(
                 new ScoreModel { Points = data.PointsObtained, Xp = data.XpObtained, Uid = uid });
+        }
+        private bool EqualAns(List<int> A,List<int> B)
+        {
+            var firstNotSecond = A.Except(B).ToList();
+            var secondNotFirst = B.Except(A).ToList();
+            return !firstNotSecond.Any() && !secondNotFirst.Any();
+
         }
         private async Task<StudentModel> CreateOrGetProfileAsync(string uid)
         {

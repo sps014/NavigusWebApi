@@ -14,17 +14,18 @@
     </div>
 }
 <div class="alert alert-primary">
+
 @if (course != null)
 {
     <p>@course.CourseId</p>
 }
-@if (loadedProfile)
+@*@if (result!=null)
 {
-    <p>Points : @stud.PointsObtained</p>
-    <p>XP : @stud.XpObtained</p>
-    <p>IsPass @passed</p>
+    <p>Points : @result.Points</p>
+    <p>XP : @result.XP</p>
+    <p>IsPass @result.PassStatus</p>
 
-}
+*@}
 </div>
 
 @if (loadedProfile && current>=0 && course!=null && course.Quiz.Questions.Length>current)
@@ -35,7 +36,7 @@
         <input type="checkbox" id="@v" name="@v" @bind="selected[i]">
         <label for="@v">@v</label><br>
     }
-    <button class="btn btn-primary" @onclick="Submit">Submit</button>
+    <button class="btn btn-primary" @onclick="async()=>{await Submit(); StateHasChanged();}">Submit</button>
 
 }
 @code 
@@ -49,10 +50,11 @@
     StudentCourseDetailsModel stud;
     CourseModel course;
 
+    AnsRes result;
+
     bool loadedProfile;
     int current = -2;
     List<bool> selected;
-    bool passed = false;
 
     QuestionModel CurQ() => course==null?null:course.Quiz.Questions.Length>current && current>=0?course.Quiz.Questions[current]:null;
 
@@ -80,20 +82,28 @@
 
     async Task Submit()
     {
+        var ans = new List<int>();
+        for (var i = 0; i < CurQ().Options.Length; i++)
+        {
+            if(selected[i])
+            {
+                ans.Add(i);
+            }
+        }
         var anon = new
         {
             CourseId = stud.CourseId,
             QuestionIndex = current,
-            Answers = selected.Select((a, i) => (a, i)).Where((a) => a.a==true).Select((a,i)=>i).ToArray()
+            Answers = ans.ToArray()
         };
 
         var r=await Http.PostAsJsonAsync("/Student/submitanswer/",anon);
         if(r.IsSuccessStatusCode)
         {
-            var res = JsonSerializer.Deserialize<AnsRes>(await r.Content.ReadAsStringAsync());
-            stud.XpObtained = res.XP;
-            stud.PointsObtained = res.Points;
-            passed = res.PassStatus;
+            var str=await r.Content.ReadAsStringAsync();
+            result = JsonSerializer.Deserialize<AnsRes>(str);
+            
+            base.StateHasChanged();
 
             if (current+1 < course.Quiz.Questions.Length)
                 DisplayQuestion(current+1);
