@@ -22,7 +22,14 @@
                 <h5 class="card-title">@c.CourseName</h5>
                 @if (CredsData.Role == Roles.Student)
                 {
-                    <div class="btn btn-primary m-2" @onclick="async()=>await Enroll(c.CourseId)">Enroll</div>
+                    @if(enrolled.Contains(c.CourseId))
+                    {
+                            <p style="color:yellow">Already Enrolled</p>
+                    }
+                    else
+                    {
+                        <div class="btn btn-success m-2" @onclick="async()=>await Enroll(c.CourseId)">Enroll</div>
+                    }
                 }
                 else
                 {
@@ -41,9 +48,11 @@
 @code 
 {
     List<CourseModel> courses = new List<CourseModel>();
+    HashSet<string> enrolled = new HashSet<string>();
     protected override async Task OnInitializedAsync()
     {
         courses = await FetchAll();
+        enrolled = await FetchEnrolled();
         StateHasChanged();
     }
 
@@ -73,14 +82,7 @@
     {
          Http.DefaultRequestHeaders.Authorization = CredsData.HeaderJWT;
          var r=await Http.GetAsync("/Student/enroll/" + id);
-        if(r.IsSuccessStatusCode)
-        {
-            Nav.NavigateTo("enrolled");
-        }
-        else
-        {
-            Console.WriteLine(await r.Content.ReadAsStringAsync());
-        }
+         Nav.NavigateTo("enrolled");
     }
 
     void GoToView(string id)
@@ -92,14 +94,22 @@
     {
         Nav.NavigateTo("/newcourse");
     }
+    async Task<HashSet<string>> FetchEnrolled()
+    {
+        var r = await Http.GetFromJsonAsync<StudentModel>("/Student/enrolledlist/");
+        if(r!=null)
+        {
+            return r.EnrolledCourses.Select(x => x.CourseId).ToHashSet();
+        }
+        return new HashSet<string>();
+    }
 
 }
 
 <style>
     head,body
     {
-    background-color: #A9C9FF;
-    background-image: linear-gradient(180deg, #A9C9FF 0%, #FFBBEC 100%);
-    height: 100vh;
+        background-image: radial-gradient( circle farthest-corner at 32.7% 82.7%,  rgba(173,0,171,1) 8.3%, rgba(15,51,92,1) 79.4% );
+        height: 100vh;
     }
 </style>

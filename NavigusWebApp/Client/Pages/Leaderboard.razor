@@ -7,18 +7,18 @@
 @if (courses != null)
 {
     <p>selected Course </p>
-    <select name="id" id="id" @onchange="Changed" class="form-control">
+    <select name="id" id="id" @onchange="Changed" class="form-control bg-dark text-white">
         @foreach (var v in courses)
         {
             <option value="@v.CourseId">@v.CourseId</option>
         }
     </select>
 
-    <div class="mt=6">
+    <div class="m-4">
         @foreach(var s in scores)
         {
-            <div class="alert alert-primary m-5">
-                <p>UID : @s.Uid</p>
+            <div class="alert bg-dark m-2">
+                <p>User ID : @s.Uid</p>
                 <p> XP: @s.Xp</p>
                 <p>Points :@s.Points</p>
             </div>
@@ -39,6 +39,11 @@
     protected override async Task OnInitializedAsync()
     {
         courses = await FetchAll();
+        if(courses.Count>=1)
+        {
+            selected = courses[0].CourseId;
+            await FetchScores();
+        }
         StateHasChanged();
     }
 
@@ -71,3 +76,10 @@
     }
 
 }
+
+<style>
+    html,body{
+        background-image: radial-gradient( circle farthest-corner at 32.7% 82.7%,  rgba(173,0,171,1) 8.3%, rgba(15,51,92,1) 79.4% );
+        height:100%;
+    }
+</style>

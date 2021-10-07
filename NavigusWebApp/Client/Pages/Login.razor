@@ -6,7 +6,7 @@
 @inject HttpClient Http
 
 <NavMenu/>
-
+<div class="alert bg-dark m-4">
 <div class="login m-4">
           <div class="login-header">
             <h3>LOGIN</h3>
@@ -14,14 +14,15 @@
           </div>
         </div>
         <div class="login-form">
-          <input class="form-control m-3" type="email" placeholder="email" @bind-value="email"/>
-          <input class="form-control m-3" type="password" placeholder="password" @bind-value="password"/>
+          <input class="form-control ml-2" type="email" placeholder="email" @bind-value="email"/>
+          <input class="form-control ml-2 mt-4" type="password" placeholder="password" @bind-value="password"/>
           @if (!string.IsNullOrWhiteSpace(error))
           {
-            <div class="alert alert-danger m-3">@error</div>
+            <div class="alert alert-danger ml-2">@error</div>
           }
-          <button class="btn btn-primary m-3" @onclick="DoLogin">login</button>
+          <button class="btn btn-success ml-2 my-4" @onclick="DoLogin">login</button>
           <p class="message">Not registered? <a href="/signup">Create an account</a></p>
+        </div>
         </div>
 @code {
   
@@ -47,7 +48,6 @@
       StateHasChanged();
     }
   }
-
   public class LoginRes
   {
     public string token { get; set; }
@@ -56,3 +56,9 @@
 
 }
 
+<style>
+    html,body{
+        background-image: radial-gradient( circle farthest-corner at 32.7% 82.7%,  rgba(173,0,171,1) 8.3%, rgba(15,51,92,1) 79.4% );
+        height:100vh;
+    }
+</style>

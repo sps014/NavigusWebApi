@@ -6,7 +6,7 @@
 @inject HttpClient Http
 
 <NavMenu/>
-
+<div class="alert bg-dark m-4">
 <div class="login m-4">
           <div class="login-header">
             <h3>Signup</h3>
@@ -14,13 +14,13 @@
           </div>
         </div>
 <div class="login-form">
-    <input class="form-control m-3" type="text" placeholder="username" @bind-value="username"/>
-    <input class="form-control m-3" type="email" placeholder="email" @bind-value="email"/>
-    <input class="form-control m-3" type="password" placeholder="password" @bind-value="password"/>
+    <input class="form-control ml-2 my-2" type="text" placeholder="username" @bind-value="username"/>
+    <input class="form-control ml-2 my-2" type="email" placeholder="email" @bind-value="email"/>
+    <input class="form-control ml-2 my-2" type="password" placeholder="password" @bind-value="password"/>
     <div>
         <label for="role">Choose a Role:</label>
         
-        <select class="form-control m-3" name="role" id="role" @onchange="Changed">
+        <select class="form-control ml-2 my-2" name="role" id="role" @onchange="Changed">
             <option value="Student">Student</option>
             <option value="Teacher">Teacher</option>
         </select>
@@ -35,6 +35,7 @@
     <p class="message">Already registered? <a href="/login">Login</a></p>
     
     <p class="m-3">After signup you will be directed to login page</p>
+</div>
 </div>
 
 @code {
@@ -75,3 +76,10 @@
     }
 
 }
+
+<style>
+    html,body{
+        background-image: radial-gradient( circle farthest-corner at 32.7% 82.7%,  rgba(173,0,171,1) 8.3%, rgba(15,51,92,1) 79.4% );
+        height:100vh;
+    }
+</style>

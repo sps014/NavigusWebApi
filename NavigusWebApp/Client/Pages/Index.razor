@@ -8,10 +8,10 @@
 
 @if(!CredsData.IsLogin)
 {
-    <div class="alert alert-info">
+    <div class="alert alert-dark bg-dark text-white m-4">
             <div class="mb-4">Please Either Login or Signup into website</div>
-        <a class="btn btn-primary" href="/login">Login</a>
-        <a class="btn btn-warning" href="/signup">Signup</a>
+        <a class="btn btn-primary m-2" href="/login">Login</a>
+        <a class="btn btn-success m-2" href="/signup">Signup</a>
     </div>
 }
 else
@@ -48,7 +48,7 @@ else
 <style>
     html,body{
         background-color: #8EC5FC;
-        background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
-
+        background-image: radial-gradient( circle farthest-corner at 32.7% 82.7%,  rgba(173,0,171,1) 8.3%, rgba(15,51,92,1) 79.4% );
+        height:100vh;
     }
 </style>
