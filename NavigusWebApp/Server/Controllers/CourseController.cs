@@ -110,9 +110,6 @@ namespace NavigusWebApi.Controllers
 
                 var prev = rec.ConvertTo<CourseModel>();
                 
-                //if new course does not have new quiz add previous quiz
-                courseModel.Quiz ??= prev.Quiz;
-                
                 //delete previous and add new 
                 await Db.Collection(ListCollectionName).Document(id).DeleteAsync();
                 

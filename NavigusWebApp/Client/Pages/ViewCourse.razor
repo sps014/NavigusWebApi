@@ -6,35 +6,37 @@
 <div class="m-4">
 @if (course is not null)
 {
-    <p>Course ID: @course.CourseId</p>
-    <p>Course Name: @course.CourseName</p>
-    if (course.Quiz is not null)
+    <p class="mb-2">Course ID</p>
+    <input type="text" class="form-control" @bind-value="@course.CourseId"/>
+    <p class="my-2">Course Name:</p>
+    <input type="text" class="form-control m-2" @bind-value="@course.CourseName"/>
+    @if (!string.IsNullOrWhiteSpace(quizError))
     {
-        <div class="alert alert-info">
-            <p>Quiz Duration @course.Quiz.Duration</p>
-            <p>Quiz Passing Marks @course.Quiz.PassingMarks</p>
-        </div>
+        <div class="alert alert-danger">@quizError</div>
+    }
+    <div class="btn btn-primary mb-4" @onclick="async () => {await SaveQuiz();}">Save</div>
+    <div class="alert alert-info">
+        <p>Quiz Duration @course.Quiz.Duration</p>
+        <p>Quiz Passing Marks @course.Quiz.PassingMarks</p>
+    </div>
         
-            @foreach (var q in course.Quiz.Questions)
+    /*@*/foreach (var q in course.Quiz.Questions)
+    {
+        <div class="alert alert-secondary m-4">
+            <p style="font-weight: bold">Question: @q.Question</p>
+            <p>Options:</p>
+            @foreach (var o in q.Options)
             {
-                <div class="alert alert-secondary m-4">
-                    <p style="font-weight: bold">Question: @q.Question</p>
-                <p>Options:</p>
-                @foreach (var o in q.Options)
-                {
-                    <p class="text-primary">@o</p>
-                }
-                <p>Correct Answer(s):</p>
-                @foreach (var o in q.CorrectOptionIndexs)
-                {
-                    <p class="text-success">@q.Options[o]</p>
-                }
-                <p class="text-danger">Point: @q.Points</p>
-                <p>Tags: @q.Tags</p>
-                </div>
-
+                <p class="text-primary">@o</p>
             }
-        
+            <p>Correct Answer(s):</p>
+            @foreach (var o in q.CorrectOptionIndexs)
+            {
+                <p class="text-success">@q.Options[o]</p>
+            }
+            <p class="text-danger">Point: @q.Points</p>
+            @* <p>Tags: @q.Tags</p> *@
+        </div>
     }
 }
 else
@@ -61,6 +63,22 @@ else
         catch (Exception _)
         {
             Console.WriteLine("Failed");
+        }
+        StateHasChanged();
+    }
+
+    string quizError = "";
+    
+    async Task SaveQuiz()
+    {
+         var res=await Http.PostAsJsonAsync("/Course/edit/"+id,course);
+        if (res.IsSuccessStatusCode)
+        {
+            quizError = null;
+        }
+        else
+        {
+            quizError = await res.Content.ReadAsStringAsync();
         }
         StateHasChanged();
     }
