@@ -1,0 +1,73 @@
+﻿@page "/leaderboard"
+@using NavigusWebApi.Models
+@using NavigusWebApp.Client.Data
+@inject HttpClient Http
+
+<NavMenu></NavMenu>
+@if (courses != null)
+{
+    <p>selected Course </p>
+    <select name="id" id="id" @onchange="Changed" class="form-control">
+        @foreach (var v in courses)
+        {
+            <option value="@v.CourseId">@v.CourseId</option>
+        }
+    </select>
+
+    <div class="mt=6">
+        @foreach(var s in scores)
+        {
+            <div class="alert alert-primary m-5">
+                <p>UID : @s.Uid</p>
+                <p> XP: @s.Xp</p>
+                <p>Points :@s.Points</p>
+            </div>
+        }
+    </div>
+    
+    
+}
+
+
+@code {
+    List<CourseModel> courses = new List<CourseModel>();
+
+    string selected;
+
+    List<ScoreModel> scores = new List<ScoreModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        courses = await FetchAll();
+        StateHasChanged();
+    }
+
+    async Task Changed(ChangeEventArgs e)
+    {
+        selected = (string) e.Value;
+        await FetchScores();
+    }
+
+    async Task FetchScores()
+    {
+        var n = await Http.GetFromJsonAsync<List<ScoreModel>>("Leaderboard/get/"+selected);
+        if (n != null)
+            scores = n;
+            StateHasChanged();
+    }
+
+    async Task<List<CourseModel>> FetchAll()
+    {
+
+        Http.DefaultRequestHeaders.Authorization = CredsData.HeaderJWT;
+        try
+        {
+            return await Http.GetFromJsonAsync<List<CourseModel>>("/Course/list");
+        }
+        catch (Exception _)
+        {
+            return new List<CourseModel>();
+        }
+    }
+
+}
