@@ -1,0 +1,77 @@
+﻿@page "/viewcourse/{id}"
+@using NavigusWebApi.Models
+@using NavigusWebApp.Client.Data
+@inject HttpClient Http
+<NavMenu></NavMenu>
+<div class="m-4">
+@if (course is not null)
+{
+    <p>Course ID: @course.CourseId</p>
+    <p>Course Name: @course.CourseName</p>
+    if (course.Quiz is not null)
+    {
+        <div class="alert alert-info">
+            <p>Quiz Duration @course.Quiz.Duration</p>
+            <p>Quiz Passing Marks @course.Quiz.PassingMarks</p>
+        </div>
+        
+            @foreach (var q in course.Quiz.Questions)
+            {
+                <div class="alert alert-secondary m-4">
+                    <p style="font-weight: bold">Question: @q.Question</p>
+                <p>Options:</p>
+                @foreach (var o in q.Options)
+                {
+                    <p class="text-primary">@o</p>
+                }
+                <p>Correct Answer(s):</p>
+                @foreach (var o in q.CorrectOptionIndexs)
+                {
+                    <p class="text-success">@q.Options[o]</p>
+                }
+                <p class="text-danger">Point: @q.Points</p>
+                <p>Tags: @q.Tags</p>
+                </div>
+
+            }
+        
+    }
+}
+else
+{
+    
+}
+</div>
+
+@code {
+    [Parameter]public  string id { get; set; }
+    CourseModel course = null;
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchCurrent();
+    }
+
+    async Task FetchCurrent()
+    {
+        Http.DefaultRequestHeaders.Authorization = CredsData.HeaderJWT;
+        try
+        {
+            course= await Http.GetFromJsonAsync<CourseModel>("/Course/get/"+id);
+        }
+        catch (Exception _)
+        {
+            Console.WriteLine("Failed");
+        }
+        StateHasChanged();
+    }
+
+}
+
+<style>
+    head,body
+    {
+    background-color: #A9C9FF;
+    background-image: linear-gradient(180deg, #A9C9FF 0%, #FFBBEC 100%);
+    height: 100%;
+    }
+</style>

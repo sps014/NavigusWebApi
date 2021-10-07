@@ -1,0 +1,18 @@
+﻿@page "/modifycourse/{id}"
+
+<NavMenu></NavMenu>
+
+<div>
+    <p>Course Id : @id </p>
+    <div class="m-4">
+        <input class="form-control" type="text" placeholder="new course id"/>
+        <input class="form-control" type="text" placeholder="new course name"/>
+    </div>
+    
+</div>
+
+@code
+{
+    [Parameter]
+    public string id { get; set; }
+}
