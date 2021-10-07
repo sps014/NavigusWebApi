@@ -1,0 +1,51 @@
+﻿@page "/newcourse"
+@using NavigusWebApi.Models
+@inject HttpClient Http
+@inject NavigationManager Nav
+<NavMenu></NavMenu>
+
+
+@if (course is not null)
+{
+    <p class="mb-2">Course ID</p>
+    <input type="text" class="form-control" @bind-value="@course.CourseId"/>
+    <p class="my-2">Course Name:</p>
+    <input type="text" class="form-control m-2" @bind-value="@course.CourseName"/>
+    @if (!string.IsNullOrWhiteSpace(quizError))
+    {
+        <div class="alert alert-danger">@quizError</div>
+    }
+    <div class="btn btn-primary mb-4" @onclick="async () => {await SaveQuiz();}">Save</div>
+    <div class="alert alert-info">
+
+        <p>Quiz Duration</p>
+        <input type="number" class="form-control" @bind-value="course.Quiz.Duration"/>
+        <p>Quiz Passing Marks </p>
+        <input type="number" class="form-control" @bind-value="course.Quiz.PassingMarks"/>
+
+    </div>
+}
+
+@code
+{
+    CourseModel course = new CourseModel() { Quiz = new QuizModel{Questions = Array.Empty<QuestionModel>()} };
+    string quizError = "";
+    async Task SaveQuiz()
+    {
+
+        var res=await Http.PostAsJsonAsync("/Course/add/",course);
+        if (res.IsSuccessStatusCode)
+        {
+            quizError = null;
+        }
+        else
+        {
+            quizError = await res.Content.ReadAsStringAsync();
+            Nav.NavigateTo("/viewcourse/"+course.CourseId);
+            StateHasChanged();
+            return;
+        }
+
+        StateHasChanged();
+    }
+}
