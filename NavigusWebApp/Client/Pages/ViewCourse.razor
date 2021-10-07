@@ -5,6 +5,8 @@
 @inject NavigationManager Nav
 
 <NavMenu></NavMenu>
+
+<div class="bg-dark m-2 p-4">
 @if (course is not null)
 {
     <p class="mb-2">Course ID</p>
@@ -15,8 +17,8 @@
     {
         <div class="alert alert-danger">@quizError</div>
     }
-    <div class="btn btn-primary mb-4" @onclick="async () => {await SaveQuiz();}">Save</div>
-    <div class="alert alert-info">
+    <div class="btn btn-primary mb-4 mt-2" @onclick="async () => {await SaveQuiz();}">Save</div>
+    <div class="alert" style="background-color:#2a2a30">
 
         <p>Quiz Duration</p>
             <input type="number" class="form-control" @bind-value="course.Quiz.Duration"/>
@@ -25,11 +27,11 @@
 
     </div>
 
-    <button class="btn btn-secondary" @onclick="GoToAdd">Add Question</button>
+    <button class="btn btn-success" @onclick="GoToAdd">Add Question</button>
 
     foreach (var (q,i) in course.Quiz.Questions.Select((q,i)=>(q,i)))
     {
-        <div class="alert alert-secondary m-4">
+        <div class="alert m-4" style="background-color:#2a2a30">
             <p style="font-weight: bold">Question: @q.Question</p>
             <p>Options:</p>
             @foreach (var o in q.Options)
@@ -50,7 +52,7 @@
     }
 
 }
-
+</div>
 @code 
 {
 
@@ -113,10 +115,8 @@
 }
 
 <style>
-    head,body
-    {
-    background-color: #A9C9FF;
-    background-image: linear-gradient(180deg, #A9C9FF 0%, #FFBBEC 100%);
-    height: 100%;
+    html,body{
+        background-image: radial-gradient( circle farthest-corner at 32.7% 82.7%,  rgba(173,0,171,1) 8.3%, rgba(15,51,92,1) 79.4% );
+        height:100%;
     }
 </style>
