@@ -1,7 +1,7 @@
 ﻿@page "/startquiz/{id}"
 @using NavigusWebApi.Models
-@using NavigusWebApp.Client.Data
 @using System.Text.Json
+@using NavigusWebApp.Client.Data
 @inject HttpClient Http
 @inject NavigationManager Nav
 
@@ -13,11 +13,13 @@
         @err
     </div>
 }
-<div class="alert alert-primary">
+<div class="alert alert-dark bg-dark text-white">
 
 @if (course != null)
 {
-    <p>@course.CourseId</p>
+    <p style="color:deeppink">@course.CourseId</p>
+    <p style="color:yellow">Duration: @course.Quiz.Duration min</p>
+    <div class="mb-4"></div>
 }
 @*@if (result!=null)
 {
@@ -25,20 +27,22 @@
     <p>XP : @result.XP</p>
     <p>IsPass @result.PassStatus</p>
 
-*@}
-</div>
+*@
 
 @if (loadedProfile && current>=0 && course!=null && course.Quiz.Questions.Length>current)
 {
-    <p>@CurQ().Question</p>
+    <p style="font-weight:bold">Q.@(current+1) @CurQ().Question</p>
+    <p style="font-style:italic">Select 1 or more options</p>
     @foreach (var (v,i) in CurQ().Options.Select((v,i)=>(v,i)))
     {
-        <input type="checkbox" id="@v" name="@v" @bind="selected[i]">
-        <label for="@v">@v</label><br>
+        <input type="checkbox"  class="form-check-input" id="@v" name="@v" @bind="selected[i]">
+        <label class="form-check-label" id="@v">@v</label><br>
     }
-    <button class="btn btn-primary" @onclick="async()=>{await Submit(); StateHasChanged();}">Submit</button>
+    <button class="btn btn-primary mt-4" @onclick="async()=>{await Submit(); StateHasChanged();}">Submit</button>
 
 }
+</div>
+
 @code 
 {
 
@@ -153,3 +157,10 @@
         public int NextQuestionSmartSuggestionIndex{ get; set; }
     }
 }
+
+<style>
+    html,body{
+        background-image: radial-gradient( circle farthest-corner at 32.7% 82.7%,  rgba(173,0,171,1) 8.3%, rgba(15,51,92,1) 79.4% );
+        height:100%;
+    }
+</style>

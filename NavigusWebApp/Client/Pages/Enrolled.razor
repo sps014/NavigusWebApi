@@ -17,15 +17,15 @@
                 <div class="card text-white bg-dark m-3" style="max-width: 18rem;">
                     <div class="card-header m-2">@c.CourseId</div>
                     <div class="card-body m-2">
-                        <h5 class="card-title">Enrolled in @(CourseIdToName[c.CourseId])</h5>
+                        <h5 class="card-title mb-2" style="color:yellow">Enrolled in @(CourseIdToName[c.CourseId])</h5>
                         @if (!c.QuizStarted)
                         {
                             <div class="btn btn-primary m-2" @onclick="async ()=>await GoToQuiz(c.CourseId)">Begin Quiz</div>
                         }
                         else
                         {
-                            <p>Marks: @c.PointsObtained</p>
-                            <p>XP: @c.XpObtained</p>
+                            <p style="color:pink" class="mt-4 my-2">Marks: @c.PointsObtained</p>
+                            <p style="color:pink">XP: @c.XpObtained</p>
                             <p>Enrolled on @c.EnrollTime.ToString()</p>
 
                         }
@@ -96,6 +96,6 @@
     head,body
     {
         background-image: radial-gradient( circle farthest-corner at 32.7% 82.7%,  rgba(173,0,171,1) 8.3%, rgba(15,51,92,1) 79.4% );
-        height: 100%;
+        height: 100vh;
     }
 </style>
