@@ -1,4 +1,9 @@
 ﻿@page "/signup"
+@using NavigusWebApi.Models
+@using NavigusWebApp.Client.Data
+@using System.Text.Json
+@inject NavigationManager Nav
+@inject HttpClient Http
 
 <div class="login">
           <div class="login-header">
@@ -7,21 +12,64 @@
           </div>
         </div>
 <div class="login-form">
-    <input class="form-control m-3" type="text" placeholder="username"/>
-    <input class="form-control m-3" type="email" placeholder="email"/>
-    <input class="form-control m-3" type="password" placeholder="password"/>
+    <input class="form-control m-3" type="text" placeholder="username" @bind-value="username"/>
+    <input class="form-control m-3" type="email" placeholder="email" @bind-value="email"/>
+    <input class="form-control m-3" type="password" placeholder="password" @bind-value="password"/>
     <div>
         <label for="role">Choose a Role:</label>
         
-        <select class="form-control m-3" name="role" id="role">
+        <select class="form-control m-3" name="role" id="role" @onchange="Changed">
             <option value="Student">Student</option>
             <option value="Teacher">Teacher</option>
         </select>
     </div>
-    <button class="btn btn-primary m-3">Signup</button>
+    @if (!string.IsNullOrWhiteSpace(error))
+    {
+        <p class="alert alert-danger">
+            @error
+        </p>
+    }
+    <button class="btn btn-primary m-3" @onclick="DoSignup">Signup</button>
     <p class="message">Already registered? <a href="/login">Login</a></p>
+    
+    <p class="m-3">After signup you will be directed to login page</p>
 </div>
 
 @code {
-    
+  
+    private string error;
+    private string email;
+    private string password;
+    private  string username { get; set; }
+
+    int role = 0;
+    async Task DoSignup()
+    {
+        var res=await Http.PostAsJsonAsync("/Auth/signup",
+            new NewUserModel{Email = email,Password = password
+                ,Role = (Roles)role,UserName = username});
+        
+        if (res.IsSuccessStatusCode)
+        {
+            error = "";
+            Nav.NavigateTo("/login");
+        }
+        else
+        {
+            error = await res.Content.ReadAsStringAsync();
+            StateHasChanged();
+        }
+    }
+
+    void Changed(ChangeEventArgs e)
+    {
+        role=(int)Enum.Parse<Roles>(e.Value.ToString());
+    }
+
+    public class LoginRes
+    {
+        public string token { get; set; }
+        public int role { get; set; }
+    }
+
 }

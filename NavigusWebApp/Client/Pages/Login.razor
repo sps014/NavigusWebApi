@@ -34,8 +34,8 @@
     if (res.IsSuccessStatusCode)
     {
       var d = JsonSerializer.Deserialize<LoginRes>(await res.Content.ReadAsStringAsync());
-      CredsData.JWT = d.Token;
-      CredsData.Role = (Roles)d.Role;
+      CredsData.JWT = d.token;
+      CredsData.Role = (Roles)d.role;
       error = "";
       Nav.NavigateTo("/");
     }
@@ -46,6 +46,10 @@
     }
   }
 
-  record LoginRes(string Token, int Role);
+  public class LoginRes
+  {
+    public string token { get; set; }
+    public int role { get; set; }
+  }
 
 }
