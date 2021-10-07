@@ -101,9 +101,9 @@ namespace NavigusWebApi.Controllers
             
             //checking if course id is non empty
             
-            if (courseModel.Quiz.Duration>0)
+            if (courseModel.Quiz.Duration<0)
                 return BadRequest("invalid quiz duration <0");
-            if (courseModel.Quiz.PassingMarks>0)
+            if (courseModel.Quiz.PassingMarks<0)
                 return BadRequest("invalid quiz passing marks <0");
             
 

@@ -6,6 +6,10 @@
 <NavMenu></NavMenu>
 
 <div>
+    @if(!string.IsNullOrWhiteSpace(err))
+    {
+        <div class="alert alert-danger">@err</div>
+    }
     <p>Question</p>
     <input type="text" class="form-control" @bind-value="q.Question" placeholder="Write Question here"/>
     <div class="m-2 alert alert-info"> 
@@ -34,6 +38,8 @@
 
      </div>
 
+     <div class="btn btn-success" @onclick="Submit">Submit</div>
+
 </div>
 
 @code
@@ -41,10 +47,11 @@
     [Parameter]public  string id { get; set; }
     
     QuestionModel q = new QuestionModel();
-    string quizError="";
     List<string> options = new List<string>();
     string correctOptions = "";
     string opt;
+    string err;
+
     async Task Add_Question()
     {
         Http.DefaultRequestHeaders.Authorization = CredsData.HeaderJWT;
@@ -58,7 +65,7 @@
             }
             else
             {
-                quizError = await r.Content.ReadAsStringAsync();
+                err = await r.Content.ReadAsStringAsync();
             }
             StateHasChanged();
         }
@@ -67,6 +74,30 @@
             Console.WriteLine("Failed");
         }
         StateHasChanged();
+    }
+    async Task Submit()
+    {
+        q.Options = options.ToArray();
+        var parts = correctOptions.Split(',');
+
+        var co = new List<int>();
+        foreach(var v in parts)
+        {
+            if (int.TryParse(v, out int res))
+            {
+                co.Add(res);
+            }
+            else
+            {
+                err="invalid correct option "+v;
+                StateHasChanged();
+                return;
+            }
+        }
+
+        q.CorrectOptionIndexs = co.ToArray();
+
+        await Add_Question();  
     }
 }
 
