@@ -2,8 +2,9 @@
 @using NavigusWebApi.Models
 @using NavigusWebApp.Client.Data
 @inject HttpClient Http
+@inject NavigationManager Nav
+
 <NavMenu></NavMenu>
-<div class="m-4">
 @if (course is not null)
 {
     <p class="mb-2">Course ID</p>
@@ -16,11 +17,17 @@
     }
     <div class="btn btn-primary mb-4" @onclick="async () => {await SaveQuiz();}">Save</div>
     <div class="alert alert-info">
-        <p>Quiz Duration @course.Quiz.Duration</p>
-        <p>Quiz Passing Marks @course.Quiz.PassingMarks</p>
+
+        <p>Quiz Duration</p>
+            <input type="number" class="form-control" @bind-value="course.Quiz.Duration"/>
+        <p>Quiz Passing Marks </p>
+            <input type="number" class="form-control" @bind-value="course.Quiz.PassingMarks"/>
+
     </div>
-        
-    /*@*/foreach (var q in course.Quiz.Questions)
+
+    <button class="btn btn-secondary" @onclick="GoToAdd">Add Question</button>
+
+    foreach (var (q,i) in course.Quiz.Questions.Select((q,i)=>(q,i)))
     {
         <div class="alert alert-secondary m-4">
             <p style="font-weight: bold">Question: @q.Question</p>
@@ -36,16 +43,17 @@
             }
             <p class="text-danger">Point: @q.Points</p>
             @* <p>Tags: @q.Tags</p> *@
-        </div>
-    }
-}
-else
-{
-    
-}
-</div>
+            <div class="btn btn-danger m-2" @onclick="async()=>{await DeleteQues(i);}">Delete</div>
 
-@code {
+        </div>
+
+    }
+
+}
+
+@code 
+{
+
     [Parameter]public  string id { get; set; }
     CourseModel course = null;
     protected override async Task OnInitializedAsync()
@@ -82,7 +90,26 @@ else
         }
         StateHasChanged();
     }
-
+    async Task DeleteQues(int ind)
+    {
+        var res=await Http.GetAsync("/Question/delete/"+id+"/"+ind);
+        if (res.IsSuccessStatusCode)
+        {
+            quizError = null;
+            var nl = course.Quiz.Questions.ToList();
+            nl.RemoveAt(ind); ;
+            course.Quiz.Questions =nl.ToArray();
+        }
+        else
+        {
+            quizError = await res.Content.ReadAsStringAsync();
+        }
+        StateHasChanged();
+    }
+    void GoToAdd()
+    {
+        Nav.NavigateTo("addquestions/"+id);
+    }
 }
 
 <style>

@@ -1,0 +1,81 @@
+﻿@page "/addquestions/{id}"
+@using NavigusWebApi.Models
+@using NavigusWebApp.Client.Data
+@inject HttpClient Http
+@inject NavigationManager Nav
+<NavMenu></NavMenu>
+
+<div>
+    <p>Question</p>
+    <input type="text" class="form-control" @bind-value="q.Question" placeholder="Write Question here"/>
+    <div class="m-2 alert alert-info"> 
+        <p>Options</p>
+    @foreach (var (v,i) in options.Select((v, i) => (v,i)))
+    {
+        <p>@(i+1) @v &nbsp;&nbsp;<i class="fas fa-trash" @onclick="() => { options.RemoveAt(i); StateHasChanged();}"></i></p>
+    }
+
+    <input type="text" class="form-control" @bind-value="opt"/>
+    <div class="btn btn-primary my-4" @onclick="() => { options.Add((string)opt.Clone()); StateHasChanged();}">Add Option</div>
+     </div>
+
+      <div class="m-2 alert alert-secondary"> 
+        <p>Correct Options Number (0 index based and separated by ',')</p>
+    
+    <input type="text" class="form-control" @bind-value="correctOptions"/>
+     </div>
+
+     <div>
+         <p>Difficulty (0-10)</p>
+          <input type="number" class="form-control" @bind-value="q.Difficulty"/>
+
+          <p>Points (0-10)</p>
+          <input type="number" class="form-control" @bind-value="q.Points"/>
+
+     </div>
+
+</div>
+
+@code
+{
+    [Parameter]public  string id { get; set; }
+    
+    QuestionModel q = new QuestionModel();
+    string quizError="";
+    List<string> options = new List<string>();
+    string correctOptions = "";
+    string opt;
+    async Task Add_Question()
+    {
+        Http.DefaultRequestHeaders.Authorization = CredsData.HeaderJWT;
+        try
+        {
+             var r=await Http.PostAsJsonAsync("/Question/add/"+id,q);
+
+            if (r.IsSuccessStatusCode)
+            {
+                Nav.NavigateTo("/viewcourse/"+id);
+            }
+            else
+            {
+                quizError = await r.Content.ReadAsStringAsync();
+            }
+            StateHasChanged();
+        }
+        catch (Exception _)
+        {
+            Console.WriteLine("Failed");
+        }
+        StateHasChanged();
+    }
+}
+
+
+<style>
+    head,body
+    {
+    background-color: #A9C9FF;
+    background-image: linear-gradient(180deg, #A9C9FF 0%, #FFBBEC 100%);
+    height: 100%;
+    }
+</style>
