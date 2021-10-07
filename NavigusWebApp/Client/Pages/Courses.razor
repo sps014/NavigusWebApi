@@ -1,0 +1,33 @@
+﻿@page "/Courses"
+@using NavigusWebApp.Client.Data
+@using System.Net.Http.Headers
+@using NavigusWebApi.Models
+
+@inject HttpClient Http
+
+<h3>Courses</h3>
+
+@code 
+{
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var courses = await FetchAll();
+        Console.WriteLine(courses.Count);
+    }
+
+    async Task<List<CourseModel>> FetchAll()
+    {
+
+        Http.DefaultRequestHeaders.Authorization = CredsData.HeaderJWT;
+        try
+        {
+            return await Http.GetFromJsonAsync<List<CourseModel>>("/Course/list");
+        }
+        catch (Exception _)
+        {
+            return new List<CourseModel>();
+        }
+    }
+
+}
