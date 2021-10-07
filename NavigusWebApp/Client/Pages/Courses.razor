@@ -22,7 +22,7 @@
                 <h5 class="card-title">@c.CourseName</h5>
                 @if (CredsData.Role == Roles.Student)
                 {
-                    <div class="btn btn-primary m-2">Enroll</div>
+                    <div class="btn btn-primary m-2" @onclick="async()=>await Enroll(c.CourseId)">Enroll</div>
                 }
                 else
                 {
@@ -67,6 +67,20 @@
         await Http.GetAsync("/Course/delete/" + c.CourseId);
         courses.Remove(c);
         StateHasChanged();
+    }
+
+    async Task Enroll(string id)
+    {
+         Http.DefaultRequestHeaders.Authorization = CredsData.HeaderJWT;
+         var r=await Http.GetAsync("/Student/enroll/" + id);
+        if(r.IsSuccessStatusCode)
+        {
+            Nav.NavigateTo("enrolled");
+        }
+        else
+        {
+            Console.WriteLine(await r.Content.ReadAsStringAsync());
+        }
     }
 
     void GoToView(string id)

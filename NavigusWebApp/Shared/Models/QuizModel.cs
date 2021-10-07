@@ -15,6 +15,6 @@ namespace NavigusWebApi.Models
         /// Duration in Minutes after which quiz expires for particular student
         /// </summary>
         [FirestoreProperty]
-        public long Duration { get; set; }
+        public long Duration { get; set; } = 30;
     }
 }
