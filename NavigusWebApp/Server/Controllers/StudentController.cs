@@ -188,6 +188,8 @@ namespace NavigusWebApi.Controllers
                 return Ok(new
                 {
                     PassStatus= course.PointsObtained >= courseInfo.Quiz.PassingMarks,
+                    Points=course.PointsObtained,
+                    XP=course.XpObtained,
                     NextQuestionSmartSuggestionIndex=SmartSuggestionForNextQuestion(
                         courseInfo.Quiz,course,ans.QuestionIndex,isCorrect)
                 });

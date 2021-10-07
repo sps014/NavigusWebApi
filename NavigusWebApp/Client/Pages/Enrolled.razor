@@ -20,7 +20,7 @@
                         <h5 class="card-title">Enrolled on @c.EnrolledTimeStamp.ToDateTime().ToString()</h5>
                         @if (!c.QuizStarted)
                         {
-                            <div class="btn btn-primary m-2">Begin Quiz</div>
+                            <div class="btn btn-primary m-2" @onclick="async ()=>await GoToQuiz(c.CourseId)">Begin Quiz</div>
                         }
                         else
                         {
@@ -57,6 +57,20 @@
         catch (Exception _)
         {
             return null;
+        }
+    }
+
+    async Task GoToQuiz(string id)
+    {
+
+        var res =await Http.GetAsync("/Student/startquiz/" + id);
+        if(res.IsSuccessStatusCode)
+        {
+             Nav.NavigateTo("startquiz/"+id);
+        }
+        else
+        {
+            Console.WriteLine("You can't start quiz oops");
         }
     }
     
