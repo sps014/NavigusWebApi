@@ -1,0 +1,15 @@
+﻿<div class="card bg-dark mb-4">
+    <div class="card-body">
+        <h5 class="card-title text-white">@Title</h5>
+        <p class="card-text text-white">@ChildContent</p>
+        <a href="/@Link" class="btn btn-primary">Visit @Link</a>
+        </div>
+    </div>
+@code {
+    [Parameter]
+    public  string Title { get; set; }
+    [Parameter]
+    public  RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public  string Link { get; set; }
+}

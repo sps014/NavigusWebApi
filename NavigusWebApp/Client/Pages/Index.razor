@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using NavigusWebApp.Client.Data
+@using NavigusWebApi.Models
 
 <NavMenu/>
 
@@ -7,11 +8,27 @@
 
 @if(!CredsData.IsLogin)
 {
-    <div>Please Either Login or Signup into website</div>
-    <div class="alert">
+    <div class="alert alert-info">
+            <div class="mb-4">Please Either Login or Signup into website</div>
         <a class="btn btn-primary" href="/login">Login</a>
         <a class="btn btn-warning" href="/signup">Signup</a>
     </div>
+}
+else
+{
+    <CardRow>
+        @if (CredsData.Role == Roles.Student)
+            {
+                <BootCard Link="Courses" Title="All Courses">
+                    Get list of all courses on the server.
+                </BootCard>
+                
+                <BootCard Link="Enrolled" Title="All Enrolled">
+                    Get list of all corses you enrolled  in the server.
+                </BootCard>
+            }
+    </CardRow>
+    
 }
 
 @code
@@ -21,3 +38,11 @@
         
     }
 }
+
+<style>
+    html,body{
+        background-color: #8EC5FC;
+        background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
+
+    }
+</style>
