@@ -12,8 +12,8 @@
         <button class="btn btn-secondary mx-2 m-6" @onclick="AddNew">Add Course</button>
 }
 
-<div class="container flex-row">
-
+<div class="container">
+    <div class="row">
     @foreach (var c in courses)
     {
         <div class="card text-white bg-dark m-3" style="max-width: 18rem;">
@@ -26,13 +26,15 @@
                 }
                 else
                 {
-                    <div class="btn btn-danger m-2">Delete</div>
-                    <div class="btn btn-info m-2" @onclick="() => { GoToView(c.CourseId);}">View</div>
+                        <div class="btn btn-danger m-2" @onclick="async()=>await Del(c)">Delete</div>
+                        <div class="btn btn-info m-2" @onclick="() => { GoToView(c.CourseId);}">View</div>
                 }
             </div>
         </div>
 
     }
+    </div>
+
 </div>
 
 
@@ -57,6 +59,14 @@
         {
             return new List<CourseModel>();
         }
+    }
+
+    async Task Del(CourseModel c)
+    {
+        Http.DefaultRequestHeaders.Authorization = CredsData.HeaderJWT;
+        await Http.GetAsync("/Course/delete/" + c.CourseId);
+        courses.Remove(c);
+        StateHasChanged();
     }
 
     void GoToView(string id)
