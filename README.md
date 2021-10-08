@@ -15,6 +15,7 @@ An app for hiring challenge.
 2. Email Authenetication
 3. Role Based Authoring
 4. Database Queries
+5. Swagger Endpoints for development
 
 
 
