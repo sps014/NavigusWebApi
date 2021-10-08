@@ -10,6 +10,10 @@
 
 @if (courses is not null)
 {
+    @if(courses.EnrolledCourses==null || courses.EnrolledCourses.Length==0)
+    {
+            <div class="alert bg-dark">No enrolled courses</div>
+    }
     <div class="container">
         <div class="row">
             @foreach (var c in courses.EnrolledCourses)
@@ -36,6 +40,10 @@
         </div>
 
     </div>
+}
+else
+{
+    <div class="alert bg-dark">No enrolled courses</div>
 }
 
 
