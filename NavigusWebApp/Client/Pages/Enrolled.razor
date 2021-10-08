@@ -26,7 +26,7 @@
                         {
                             <p style="color:pink" class="mt-4 my-2">Marks: @c.PointsObtained</p>
                             <p style="color:pink">XP: @c.XpObtained</p>
-                            <p>Enrolled on @c.EnrollTime.ToString()</p>
+                            <p>Enrolled on @(new DateTime(c.EnrollTime).ToString())</p>
 
                         }
                     </div>

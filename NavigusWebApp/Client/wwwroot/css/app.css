@@ -34,7 +34,7 @@ a, .btn-link {
 .validation-message {
     color: red;
 }
-
+/*
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
@@ -63,3 +63,4 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+*/
