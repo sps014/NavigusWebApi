@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NavigusWebApi.Extensions;
-using NavigusWebApi.Models;
+using NavigusWebApp.Shared.Models;
 
 namespace NavigusWebApi.Controllers
 {
@@ -60,7 +60,7 @@ namespace NavigusWebApi.Controllers
                 courses.Add(new StudentCourseDetailsModel
                 {
                     CourseId = courseId,
-                    EnrolledTimeStamp = Timestamp.GetCurrentTimestamp(),
+                    EnrolledTimeStamp = DateTime.UtcNow.Ticks.ToString(),
                     Attempted = new List<int>(),
                     CorrectAnswersIndex = new List<int>()
                 });
@@ -104,8 +104,7 @@ namespace NavigusWebApi.Controllers
                 }
 
                 course.QuizStarted = true;
-                course.QuizExpireTimeStamp = Timestamp.FromDateTime(
-                    Timestamp.GetCurrentTimestamp().ToDateTime().AddMinutes(duration));
+                course.QuizExpireTimeStamp = DateTime.UtcNow.AddMinutes(duration).Ticks.ToString();
 
                 await Db.Collection(ListCollectionName).Document(uid).SetAsync(student);
 
@@ -149,7 +148,7 @@ namespace NavigusWebApi.Controllers
                 {
                     return BadRequest($"Quiz not started, first call startquiz end point");
                 }
-                else if(course.QuizExpireTimeStamp<Timestamp.GetCurrentTimestamp())
+                else if(course.QuizExpireTime<DateTime.UtcNow.Ticks)
                 {
                     return BadRequest($"Can't submit quiz already expired diff");
                 }

@@ -1,7 +1,7 @@
 ﻿@page "/startquiz/{id}"
-@using NavigusWebApi.Models
 @using System.Text.Json
 @using NavigusWebApp.Client.Data
+@using NavigusWebApp.Shared.Models
 @inject HttpClient Http
 @inject NavigationManager Nav
 
@@ -20,7 +20,7 @@
     <p style="color:deeppink">@course.CourseId</p>
     <p style="color:yellow">Duration: @course.Quiz.Duration min</p>
     <div class="mb-4"></div>
-}
+    }
 @*@if (result!=null)
 {
     <p>Points : @result.Points</p>

@@ -1,6 +1,6 @@
 ﻿using Google.Cloud.Firestore;
 
-namespace NavigusWebApi.Models
+namespace NavigusWebApp.Shared.Models
 {
     [FirestoreData]
     public class StudentCourseDetailsModel
@@ -8,11 +8,12 @@ namespace NavigusWebApi.Models
         [FirestoreProperty]
         public string CourseId { get; set; }
         [FirestoreProperty]
-        public Timestamp EnrolledTimeStamp { get; set; }
-        public string EnrollTime=>EnrolledTimeStamp.ToDateTime().ToString();
+        public string EnrolledTimeStamp { get; set; }
+        public long EnrollTime => !string.IsNullOrWhiteSpace(EnrolledTimeStamp)? long.Parse(EnrolledTimeStamp):0;
+
         [FirestoreProperty]
-        public Timestamp QuizExpireTimeStamp { get; set; }
-        public string QuizExpireTime => QuizExpireTimeStamp.ToDateTime().ToString();
+        public string QuizExpireTimeStamp { get; set; }
+        public long QuizExpireTime=> !string.IsNullOrWhiteSpace(QuizExpireTimeStamp)? long.Parse(QuizExpireTimeStamp) :0;
 
         [FirestoreProperty]
         public bool QuizStarted { get; set; } = false;
@@ -24,6 +25,6 @@ namespace NavigusWebApi.Models
         public int PointsObtained { get; set; }
         [FirestoreProperty]
         public int XpObtained { get; set; }
-          
+
     }
 }

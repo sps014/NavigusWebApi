@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using NavigusWebApi.Models;
 using FirebaseAdmin.Auth;
 using Google.Cloud.Firestore;
 using NavigusWebApi.Manager;
 using Microsoft.AspNetCore.Authorization;
+using NavigusWebApp.Shared.Models;
 
 namespace NavigusWebApi.Controllers
 {
@@ -34,8 +34,23 @@ namespace NavigusWebApi.Controllers
             JwtManager = jwtAuth;
         }
 
+        [HttpGet("getName/{uid}")]
+        public async Task<ActionResult> GetName(string uid)
+        {
+            //get userinfo in database from uid 
+            var dbdata = await Db.Collection(CollectionName)
+                .Document(uid).GetSnapshotAsync();
 
-        [HttpPost("login")]
+            //if user exist get userinfo
+            if (dbdata.Exists)
+            {
+                var val = dbdata.ConvertTo<UserInfo>();
+                return Ok(val.UserName);
+            }
+            return BadRequest("can;t find");
+
+        }
+            [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserModel user)
         {
             //check is username and password is null or not
@@ -64,7 +79,7 @@ namespace NavigusWebApi.Controllers
                     //generate token with uid
                     var token = JwtManager.Authenticate(u.Uid,val.Role.ToString());
 
-                    return Ok(new{Token=token,Role=val.Role});
+                    return Ok(new{Token=token,Role=val.Role,UserName=val.UserName});
                 }
                 else
                 {
@@ -89,6 +104,9 @@ namespace NavigusWebApi.Controllers
             //if role is Teacher with value 1 or student with value 0 continue
             else if (user.Role != Roles.Student && user.Role != Roles.Teacher)
                 return BadRequest("Invalid User Role, use value 1 for Teacher , 0 for student");
+
+            else if (user.UserName is null || user.UserName.Length < 3)
+                return BadRequest("Name can't be less than 3 characters");
 
             try
             {

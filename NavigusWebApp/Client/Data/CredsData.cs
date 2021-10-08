@@ -1,5 +1,5 @@
 ﻿using System.Net.Http.Headers;
-using NavigusWebApi.Models;
+using NavigusWebApp.Shared.Models;
 
 namespace NavigusWebApp.Client.Data
 {
@@ -7,6 +7,7 @@ namespace NavigusWebApp.Client.Data
     {
         public static string JWT { get; set; }
         public static Roles Role {  get; set; }
+        public static string UserName {  get; set; }
         public static bool IsLogin =>JWT != null;
         public static AuthenticationHeaderValue HeaderJWT => new AuthenticationHeaderValue("bearer",JWT);
 

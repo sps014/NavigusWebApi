@@ -1,6 +1,6 @@
 ﻿@page "/leaderboard"
-@using NavigusWebApi.Models
 @using NavigusWebApp.Client.Data
+@using NavigusWebApp.Shared.Models
 @inject HttpClient Http
 
 <NavMenu></NavMenu>
@@ -18,7 +18,7 @@
         @foreach(var s in scores)
         {
             <div class="alert bg-dark m-2">
-                <p>User ID : @s.Uid</p>
+                <p>User Name : @(uidNamePair[s.Uid])</p>
                 <p> XP: @s.Xp</p>
                 <p>Points :@s.Points</p>
             </div>
@@ -35,6 +35,8 @@
     string selected;
 
     List<ScoreModel> scores = new List<ScoreModel>();
+
+    Dictionary<string, string> uidNamePair = new Dictionary<string, string>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -56,9 +58,32 @@
     async Task FetchScores()
     {
         var n = await Http.GetFromJsonAsync<List<ScoreModel>>("Leaderboard/get/"+selected);
-        if (n != null)
-            scores = n;
-            StateHasChanged();
+        if (n == null)
+            return;
+
+        scores = n;
+        await FetchNames();
+        StateHasChanged();
+    }
+    async Task FetchNames()
+    {
+        uidNamePair.Clear();
+        if(courses==null)
+        {
+            return;
+        }
+        foreach (var score in scores)
+        {
+            var n = await Http.GetAsync("Auth/getName/" + score.Uid);
+            if(n.IsSuccessStatusCode)
+            {
+                uidNamePair.Add(score.Uid,await n.Content.ReadAsStringAsync());
+            }
+            else
+            {
+                uidNamePair.Add(score.Uid,score.Uid);
+            }
+        }
     }
 
     async Task<List<CourseModel>> FetchAll()

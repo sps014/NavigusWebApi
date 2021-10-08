@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NavigusWebApi.Models;
+using NavigusWebApp.Shared.Models;
 
 namespace NavigusWebApi.Controllers
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Google.Cloud.Firestore;
 
-namespace NavigusWebApi.Models
+namespace NavigusWebApp.Shared.Models
 {
     [FirestoreData]
     public class QuestionModel

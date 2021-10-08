@@ -2,7 +2,7 @@
 
 @using NavigusWebApp.Client.Data
 @using System.Net.Http.Headers
-@using NavigusWebApi.Models
+@using NavigusWebApp.Shared.Models
 
 @inject HttpClient Http
 @inject NavigationManager Nav
@@ -45,6 +45,8 @@
     protected override async Task OnInitializedAsync()
     {
         courses = await FetchAll();
+        if (courses == null)
+            return;
         foreach (var item in courses.EnrolledCourses)
         {
             CourseIdToName.Add(item.CourseId, await CourseName(item.CourseId));

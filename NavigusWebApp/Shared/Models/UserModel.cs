@@ -1,12 +1,12 @@
 ﻿using Google.Cloud.Firestore;
 
-namespace NavigusWebApi.Models
+namespace NavigusWebApp.Shared.Models
 {
     public class NewUserModel
     {
-        public string Email {  get; set; }
-        public string Password {  get; set; }
-        public string UserName {  get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string UserName { get; set; }
         public Roles Role { get; set; }
     }
     public class UserModel
@@ -24,7 +24,7 @@ namespace NavigusWebApi.Models
         [FirestoreProperty]
         public string Password { get; set; }
         [FirestoreProperty]
-        public string UserName {  get; set; }
+        public string UserName { get; set; }
         [FirestoreProperty]
         public string Email { get; set; }
     }

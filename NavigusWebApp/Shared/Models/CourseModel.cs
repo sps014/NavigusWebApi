@@ -1,6 +1,6 @@
 ﻿using Google.Cloud.Firestore;
 
-namespace NavigusWebApi.Models
+namespace NavigusWebApp.Shared.Models
 {
     [FirestoreData]
     public class CourseModel
@@ -13,6 +13,6 @@ namespace NavigusWebApi.Models
         [FirestoreProperty]
         public QuizModel Quiz { get; set; }
         [FirestoreProperty]
-        public  string Creator { get; set; }
+        public string Creator { get; set; }
     }
 }
