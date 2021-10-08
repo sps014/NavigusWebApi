@@ -97,12 +97,21 @@
     }
     async Task<HashSet<string>> FetchEnrolled()
     {
-        var r = await Http.GetFromJsonAsync<StudentModel>("/Student/enrolledlist/");
-        if(r!=null)
+        try
         {
-            return r.EnrolledCourses.Select(x => x.CourseId).ToHashSet();
+
+
+            var r = await Http.GetFromJsonAsync<StudentModel>("/Student/enrolledlist/");
+            if (r != null)
+            {
+                return r.EnrolledCourses.Select(x => x.CourseId).ToHashSet();
+            }
+        }
+        catch(Exception _)
+        {
         }
         return new HashSet<string>();
+
     }
 
 }
