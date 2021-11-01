@@ -1,12 +1,12 @@
 {
   "type": "service_account",
   "project_id": "naviguscloud",
-  "private_key_id": "a6f00560bb72b262c0884d8ddad644cdea6a4093",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDScEH6/nOuObs6\nRnKIUftFCYsxymmt45NYW9BWQ+EUt8PeN6P1aKYKkDPyL3dYFCoLEbLFni810nCY\n2NQr/9Q+6IoWyw7YB/M+sWaG74BDl6ITw9dY0Kf9Mx4R9pXQD3BBq+dinz7+9fUQ\nIuOxBCKIxHqgtePIKLufFyLylJbMlo/eaXpkxPHhRrAP/ylrFNe22SNectl5zhuN\neJzQKWbTeeTRwrMbRG5JQ5JjvxjLIvNoHgjaJkBPw0ZD82nhmEwdb9uL7/LxcCil\ncvQtSX8ynxKCyvWAgEVu2FuikNqJXceXVzTSDjOfyZUAutojOdzwPwIHyQZrLcvy\nEWk6nxTBAgMBAAECggEAAwyAUDgeifApL8N0hlgVuV7Vhu+lT1EkQdv2rUFHggrV\niiMpO3V8Llv/fKtGYd7M6yMjAWz0xyVY30YI8OhAdXbeBU2E1glrc0WTtDHFHHWW\ncg3c0VsYi/kRHvaBHiYTHMh2Tj37Zis/FTBENzzVmUCrfCeWeMBqU3g81+HiO22O\nRp7ABjdjMAtWboccPdPj0WsT9g5jCoPmShFWqXdJyzmFxQYiA3RemKOv1i/c0Rhw\nQgil8dsW7PqS7Elx+gNlqgiVWKOPnmiSUD19wONA4PgJej6h6t8Dkc8qy45qwtWS\nOx+4ZOqK7Cls+XHUAeaFhYVqNO5QockfYdlLTLBHSQKBgQDuxkLZLXHFalYlFWHN\nUXtv9pqtPZ7RwaPAOEeh4eVnIPVYVbXCncdRHNBYn505Hje8ROYbWVaodC0f+lJt\nxDydkckquYUYCNsjEVO2oKtis6G0ooLHLs1b6OCcigGite/tjPEutha57tq0y3ot\nPfebK2xy/VN111jpdROst613fQKBgQDhnq6cpEX9B9nm0cGvbYyPKqKn+I/KiwVW\nWoyWarTlz40LDnpkq8JkNwYJrHy7sW72TXBIf1GbWCYmmEHf0PTGj1vnoPfLafI/\nu0Taf4oWgStZwYQgbtX6bAVVey55rdzqbz92xZJpuoue3Hewm8ffWP5PUX9BA4TD\nfXubWnr9lQKBgQDf98ZCclcSZxEQzcKkVTbkqbsinvc3J1xS9Dd0yDBnEMoxpovM\nVjTch5uCVY2jQw3iofn5U05uyjJ9mU7yOSzmXBYG5mfKSJxMg3cziffYqEgY6Iql\nDOiBuqndC7JHDkNUXmzodNJSa5JoHaingUWdHhkmryo3Ed0Lds8SpmOm/QKBgG66\nli/CX6cDR2oE3+3c8fMBlbqiPs/E0uXCouTfkdCHwE0A2gi2Uz0j1A7DXKQxPKgc\n8VJjSgXXiUG/z/SsdLVOfmh7k6F9aarlmbEyju7kjgYK93GDc/jnMub1AaYuMhHM\nb3U3GdhR+VwKD6PZkIqI/qam9LFPrMTUvOlNyrbRAoGAPDuQbNSahCLh38wRJqi4\njUMHHQZWbxvlrbq8dx2Nv+zhG0cH+mjlRPJOB69x3PAY3IgIHL4DrOSUdTH21j+C\neXyeXZ1mpCQQDbc4AEFROIyXYdOKkVesyVn9hIYZJfMEwLsg8IrkB3dlzsfqW/WG\nyNSLwgzLxvfF6/fEfF5ulUA=\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-lpx5b@naviguscloud.iam.gserviceaccount.com",
-  "client_id": "109204445418114855259",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-lpx5b%40naviguscloud.iam.gserviceaccount.com"
+  "private_key_id": "",
+  "private_key": "",
+  "client_email": "",
+  "client_id": "",
+  "auth_uri": "",
+  "token_uri": "",
+  "auth_provider_x509_cert_url": "",
+  "client_x509_cert_url": ""
 }
